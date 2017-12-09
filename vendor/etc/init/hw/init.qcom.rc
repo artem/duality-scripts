@@ -447,9 +447,6 @@ on property:persist.debug.trace=1
     mkdir /data/core 0777 root root
     write /proc/sys/kernel/core_pattern "/data/core/%E.%p.%e"
 
-on property:init.svc.wpa_supplicant=stopped
-    stop dhcpcd
-
 service qcom-c_main-sh /vendor/bin/init.class_main.sh
     class main
     user root
