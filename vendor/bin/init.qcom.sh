@@ -34,13 +34,6 @@
 target=`getprop ro.board.platform`
 platformid=`cat /sys/devices/soc0/soc_id`
 
-start_msm_irqbalance()
-{
-	if [ -f /vendor/bin/msm_irqbalance ]; then
-		start vendor.msm_irqbalance
-	fi
-}
-
 start_copying_prebuilt_qcril_db()
 {
     if [ -f /vendor/radio/qcril_database/qcril.db -a ! -f /data/vendor/radio/qcril.db ]; then
@@ -50,8 +43,6 @@ start_copying_prebuilt_qcril_db()
 }
 
 echo 1 > /proc/sys/net/ipv6/conf/default/accept_ra_defrtr
-
-start_msm_irqbalance
 
 #
 # Copy qcril.db if needed for RIL
