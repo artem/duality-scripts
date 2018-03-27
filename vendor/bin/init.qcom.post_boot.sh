@@ -87,8 +87,8 @@ echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
 # Setting b.L scheduler parameters
 echo 0 > /proc/sys/kernel/sched_boost
 echo 1 > /proc/sys/kernel/sched_migration_fixup
-echo 45 > /proc/sys/kernel/sched_downmigrate
-echo 45 > /proc/sys/kernel/sched_upmigrate
+echo 95 > /proc/sys/kernel/sched_upmigrate
+echo 90 > /proc/sys/kernel/sched_downmigrate
 echo 400000 > /proc/sys/kernel/sched_freq_inc_notify
 echo 400000 > /proc/sys/kernel/sched_freq_dec_notify
 echo 3 > /proc/sys/kernel/sched_spill_nr_run
