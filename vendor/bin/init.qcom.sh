@@ -49,35 +49,9 @@ start_copying_prebuilt_qcril_db()
     fi
 }
 
-baseband=`getprop ro.baseband`
 echo 1 > /proc/sys/net/ipv6/conf/default/accept_ra_defrtr
 
-case "$target" in
-    "msm8994" | "msm8992" | "msm8998" | "apq8098_latv" | "sdm845")
-        start_msm_irqbalance
-        ;;
-    "msm8996")
-        if [ -f /sys/devices/soc0/hw_platform ]; then
-             hw_platform=`cat /sys/devices/soc0/hw_platform`
-        fi
-        case "$hw_platform" in
-                "MTP" | "CDP")
-                #Loop through the sysfs nodes and determine the correct sysfs to change the permission and ownership.
-                        for count in 0 1 2 3 4 5 6 7 8 9 10
-                        do
-                                dir="/sys/devices/soc/75ba000.i2c/i2c-12/12-0020/input/input"$count
-                                if [ -d "$dir" ]; then
-                                     chmod 0660 $dir/secure_touch_enable
-                                     chmod 0440 $dir/secure_touch
-                                     chown system.drmrpc $dir/secure_touch_enable
-                                     chown system.drmrpc $dir/secure_touch
-                                     break
-                                fi
-                        done
-                        ;;
-        esac
-        ;;
-esac
+start_msm_irqbalance
 
 #
 # Copy qcril.db if needed for RIL
@@ -88,24 +62,10 @@ echo 1 > /data/vendor/radio/db_check_done
 #
 # Make modem config folder and copy firmware config to that folder for RIL
 #
-if [ -f /data/vendor/radio/ver_info.txt ]; then
-    prev_version_info=`cat /data/vendor/radio/ver_info.txt`
-else
-    prev_version_info=""
-fi
-
-cur_version_info=`cat /firmware/verinfo/ver_info.txt`
-if [ ! -f /firmware/verinfo/ver_info.txt -o "$prev_version_info" != "$cur_version_info" ]; then
-    rm -rf /data/vendor/radio/modem_config
-    mkdir /data/vendor/radio/modem_config
-    chmod 770 /data/vendor/radio/modem_config
-    cp -r /firmware/image/modem_pr/mcfg/configs/* /data/vendor/radio/modem_config
-    chown -hR radio.radio /data/vendor/radio/modem_config
-    cp /firmware/verinfo/ver_info.txt /data/vendor/radio/ver_info.txt
-    chown radio.radio /data/vendor/radio/ver_info.txt
-fi
-cp /firmware/image/modem_pr/mbn_ota.txt /data/vendor/radio/modem_config
-chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
+rm -rf /data/vendor/radio/modem_config
+mkdir /data/vendor/radio/modem_config
+chmod 770 /data/vendor/radio/modem_config
+chown -hR radio.radio /data/vendor/radio/modem_config
 echo 1 > /data/vendor/radio/copy_complete
 
 #check build variant for printk logging

@@ -34,83 +34,7 @@ soc_hwplatform=`cat /sys/devices/soc0/hw_platform` 2> /dev/null
 soc_hwid=`cat /sys/devices/soc0/soc_id` 2> /dev/null
 soc_hwver=`cat /sys/devices/soc0/platform_version` 2> /dev/null
 
-if [ -f /sys/class/graphics/fb0/virtual_size ]; then
-    res=`cat /sys/class/graphics/fb0/virtual_size` 2> /dev/null
-    fb_width=${res%,*}
-fi
-
 log -t BOOT -p i "MSM target '$1', SoC '$soc_hwplatform', HwID '$soc_hwid', SoC ver '$soc_hwver'"
-
-function set_density_by_fb() {
-    #put default density based on width
-    if [ -z $fb_width ]; then
-        setprop ro.sf.lcd_density 320
-    else
-        if [ $fb_width -ge 1440 ]; then
-           setprop ro.sf.lcd_density 560
-        elif [ $fb_width -ge 1080 ]; then
-           setprop ro.sf.lcd_density 480
-        elif [ $fb_width -ge 720 ]; then
-           setprop ro.sf.lcd_density 320 #for 720X1280 resolution
-        elif [ $fb_width -ge 480 ]; then
-            setprop ro.sf.lcd_density 240 #for 480X854 QRD resolution
-        else
-            setprop ro.sf.lcd_density 160
-        fi
-    fi
-}
-target=`getprop ro.board.platform`
-case "$target" in
-    "msm8996")
-        setprop ro.sf.lcd_density 560
-        ;;
-    "msm8998" | "apq8098_latv")
-        case "$soc_hwplatform" in
-            *)
-                setprop ro.sf.lcd_density 560
-                if [ ! -e /dev/kgsl-3d0 ]; then
-                    setprop persist.sys.force_sw_gles 1
-                    setprop sdm.idle_time 0
-                else
-                    setprop persist.sys.force_sw_gles 0
-                fi
-                ;;
-        esac
-        ;;
-    "sdm845")
-        case "$soc_hwplatform" in
-            *)
-                setprop ro.sf.lcd_density 560
-                if [ ! -e /dev/kgsl-3d0 ]; then
-                    setprop persist.sys.force_sw_gles 1
-                    setprop sdm.idle_time 0
-                else
-                    setprop persist.sys.force_sw_gles 0
-                fi
-                ;;
-        esac
-        ;;
-esac
-
-# In mpss AT version is greater than 3.1, need
-# to use the new vendor-ril which supports L+L feature
-# otherwise use the existing old one.
-if [ -f /firmware/verinfo/ver_info.txt ]; then
-    modem=`cat /firmware/verinfo/ver_info.txt |
-            sed -n 's/^[^:]*modem[^:]*:[[:blank:]]*//p' |
-            sed 's/.*AT.\(.*\)/\1/g' | cut -d \- -f 1`
-    if [ "$modem" \< "3.1" ]; then
-        setprop vendor.rild.libpath "/vendor/lib64/libril-qc-qmi-1.so"
-    else
-        setprop vendor.rild.libpath "/vendor/lib64/libril-qc-hal-qmi.so"
-    fi
-fi
-
-#set default lcd density
-#Since lcd density has read only
-#property, it will not overwrite previous set
-#property if any target is setting forcefully.
-set_density_by_fb
 
 # Setup display nodes & permissions
 # HDMI can be fb1 or fb2
@@ -222,7 +146,5 @@ else
 fi
 
 # copy GPU frequencies to system property
-if [ -f /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies ]; then
-    gpu_freq=`cat /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies` 2> /dev/null
-    setprop ro.gpu.available_frequencies "$gpu_freq"
-fi
+gpu_freq=`cat /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies` 2> /dev/null
+setprop ro.gpu.available_frequencies "$gpu_freq"
