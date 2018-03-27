@@ -73,10 +73,6 @@ echo 79000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresi
 echo 307200 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction
-
-# Override with SOMC tuning parameters for governor
-/vendor/bin/sh //vendor/etc/init.sony.cpu_parameter_gov.sh
-
 # re-enable thermal and BCL hotplug
 echo 1 > /sys/module/msm_thermal/core_control/enabled
 echo -n disable > /sys/devices/soc/soc:qcom,bcl/mode
@@ -85,7 +81,7 @@ echo $bcl_soc_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask
 echo -n enable > /sys/devices/soc/soc:qcom,bcl/mode
 # input boost configuration
 echo "0:1324800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
-echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
+echo 80 > /sys/module/cpu_boost/parameters/input_boost_ms
 # Setting b.L scheduler parameters
 echo 0 > /proc/sys/kernel/sched_boost
 echo 1 > /proc/sys/kernel/sched_migration_fixup
@@ -95,6 +91,7 @@ echo 400000 > /proc/sys/kernel/sched_freq_inc_notify
 echo 400000 > /proc/sys/kernel/sched_freq_dec_notify
 echo 3 > /proc/sys/kernel/sched_spill_nr_run
 echo 100 > /proc/sys/kernel/sched_init_task_load
+echo 9 > /proc/sys/kernel/sched_upmigrate_min_nice
 # Enable bus-dcvs
 for cpubw in /sys/class/devfreq/*qcom,cpubw*
 do
@@ -120,10 +117,6 @@ do
     echo 10 > $memlat/polling_interval
 done
 echo "cpufreq" > /sys/class/devfreq/soc:qcom,mincpubw/governor
-
-# Override with SOMC tuning parameters for scheduler and others
-/vendor/bin/sh /vendor/etc/init.sony.cpu_parameter.sh
-
 echo N > /sys/module/lpm_levels/parameters/sleep_disabled
 
 # Post-setup services
