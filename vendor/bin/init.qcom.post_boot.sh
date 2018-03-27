@@ -80,8 +80,10 @@ echo $bcl_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_mask
 echo $bcl_soc_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask
 echo -n enable > /sys/devices/soc/soc:qcom,bcl/mode
 # input boost configuration
-echo "0:1324800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
-echo 80 > /sys/module/cpu_boost/parameters/input_boost_ms
+echo "0:1228800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
+echo 90 > /sys/module/cpu_boost/parameters/input_boost_ms
+echo "0:1113600 2:1248000" > /sys/module/cpu_boost/parameters/input_boost_freq_s2
+echo 150 > /sys/module/cpu_boost/parameters/input_boost_ms_s2
 # Setting b.L scheduler parameters
 echo 0 > /proc/sys/kernel/sched_boost
 echo 1 > /proc/sys/kernel/sched_migration_fixup
