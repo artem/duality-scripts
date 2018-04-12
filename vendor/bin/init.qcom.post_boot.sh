@@ -31,14 +31,8 @@
 # Modifications are licensed under the License.
 #
 
-# disable thermal bcl hotplug to switch governor
+# disable thermal to switch governor
 echo 0 > /sys/module/msm_thermal/core_control/enabled
-echo -n disable > /sys/devices/soc/soc:qcom,bcl/mode
-bcl_hotplug_mask=`cat /sys/devices/soc/soc:qcom,bcl/hotplug_mask`
-echo 0 > /sys/devices/soc/soc:qcom,bcl/hotplug_mask
-bcl_soc_hotplug_mask=`cat /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask`
-echo 0 > /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask
-echo -n enable > /sys/devices/soc/soc:qcom,bcl/mode
 # set sync wakee policy tunable
 echo 1 > /proc/sys/kernel/sched_prefer_sync_wakee_to_waker
 # configure governor settings for little cluster
@@ -73,12 +67,8 @@ echo 79000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresi
 echo 307200 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction
-# re-enable thermal and BCL hotplug
+# re-enable thermal
 echo 1 > /sys/module/msm_thermal/core_control/enabled
-echo -n disable > /sys/devices/soc/soc:qcom,bcl/mode
-echo $bcl_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_mask
-echo $bcl_soc_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask
-echo -n enable > /sys/devices/soc/soc:qcom,bcl/mode
 # input boost configuration
 echo "0:1228800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
 echo 90 > /sys/module/cpu_boost/parameters/input_boost_ms
