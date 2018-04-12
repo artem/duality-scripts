@@ -14,7 +14,7 @@
 /dev/block/bootdevice/by-name/diag       /idd               ext4   nosuid,nodev,noatime,noexec,barrier=1,discard    wait,check,formattable,notrim
 /devices/soc/74a4900.sdhci/mmc_host*    /storage/sdcard1  vfat    nosuid,nodev                                        wait,voldmanaged=sdcard1:auto,encryptable=footer,noemulatedsd
 /dev/block/bootdevice/by-name/Qnovo     /qns              ext4    nosuid,nodev,noatime,noexec,barrier=1,discard       wait,check,formattable,notrim
-/dev/block/zram0                        none              swap    defaults                                            zramsize=536870912
+/dev/block/zram0                        none              swap    defaults                                            zramsize=536870912,max_comp_streams=4
 
 
 /dev/block/bootdevice/by-name/misc      /misc             emmc    defaults                                            defaults
