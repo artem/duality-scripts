@@ -48,7 +48,7 @@ echo 80 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 echo 19000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo 79000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis
 echo 307200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif
+echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif
 echo 1 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction
 # online CPU2
 echo 1 > /sys/devices/system/cpu/cpu2/online
@@ -56,16 +56,16 @@ echo 1 > /sys/devices/system/cpu/cpu2/online
 echo "interactive" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_sched_load
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_migration_notif
-echo "19000 1400000:39000 1700000:39000" > /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay
+echo "19000 1400000:39000 1700000:19000 2100000:79000" > /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay
 echo 90 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/go_hispeed_load
 echo 20000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_rate
 echo 1248000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/hispeed_freq
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/io_is_busy
-echo "85 1500000:90 1800000:95" > /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads
+echo "85 1500000:90 1800000:70 2100000:95" > /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads
 echo 19000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/min_sample_time
-echo 39000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis
+echo 79000 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis
 echo 307200 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
-echo 0 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif
+echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif
 echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction
 # re-enable thermal
 echo 1 > /sys/module/msm_thermal/core_control/enabled
