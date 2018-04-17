@@ -70,10 +70,8 @@ echo 1 > /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction
 # re-enable thermal
 echo 1 > /sys/module/msm_thermal/core_control/enabled
 # input boost configuration
-echo "0:1228800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
-echo 90 > /sys/module/cpu_boost/parameters/input_boost_ms
-echo "0:1113600 2:1248000" > /sys/module/cpu_boost/parameters/input_boost_freq_s2
-echo 150 > /sys/module/cpu_boost/parameters/input_boost_ms_s2
+echo "0:1324800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
+echo 80 > /sys/module/cpu_boost/parameters/input_boost_ms
 # Setting b.L scheduler parameters
 echo 0 > /proc/sys/kernel/sched_boost
 echo 1 > /proc/sys/kernel/sched_migration_fixup
